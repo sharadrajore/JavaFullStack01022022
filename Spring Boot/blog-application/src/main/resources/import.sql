@@ -1,0 +1,2 @@
+insert into post (post_id,content,description,title)values (1,"Very Good","Post on Angular","My First Blog")
+insert into post (post_id,content,description,title)values (2,"Excellent","Post on pring Boot","My Second Blog")

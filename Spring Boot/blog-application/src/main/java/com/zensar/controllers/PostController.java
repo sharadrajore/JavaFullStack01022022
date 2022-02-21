@@ -1,9 +1,8 @@
 package com.zensar.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zensar.entity.Post;
+import com.zensar.services.PostService;
 
 @RestController
 @RequestMapping("/api/posts/")
@@ -28,61 +26,38 @@ public class PostController {
 
 	// http://localhost:8080/api/posts/test?name=Ram - RequestParam
 
-	@GetMapping("/test")
-	public String sayHello(@RequestParam("name") String name) {
-		return "Hello " + name;
-	}
-
-	// C -Created R -Read all post/{postId } U- updated D-delete
-
-	private List<Post> posts = new ArrayList<>();
-
-	// http://localhost:8080/api/posts -> POST
+	@Autowired
+	private PostService postService;
 
 	// @RequestMapping(value = "/api/posts",method = RequestMethod.POST)
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Post> createPost(@RequestBody Post post) {
-		posts.add(post);
-		return new ResponseEntity<Post>(post, HttpStatus.CREATED);
+		Post post2 = postService.createPost(post);
+		return new ResponseEntity<Post>(post2, HttpStatus.CREATED);
 	}
 
 	// @RequestMapping(value = "/api/posts",method = RequestMethod.GET)
 	@GetMapping()
 	public List<Post> getAllPosts() {
-		return posts;
+		return postService.getAllPosts();
 	}
 
 	// http://localhost:8080/api/post/100
 	// @RequestMapping(value = "/api/posts/{postId}",method = RequestMethod.GET)
 	@GetMapping(value = "/{postId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public Post getPostByPostId(@PathVariable("postId") int id) {
-		for (Post post : posts) {
-			if (post.getPostId() == id)
-				return post;
-		}
-		return null;
+		return postService.getPostByPostId(id);
 	}
 
 	@DeleteMapping("/{postId}")
-	public boolean deletePostById(@PathVariable("postId") int postId) {
+	public void deletePostById(@PathVariable("postId") int postId) {
+		postService.deletePostById(postId);
 
-		for (Post post : posts) {
-			if (post.getPostId() == postId)
-				return posts.remove(post);
-		}
-
-		return false;
 	}
 
 	@PutMapping("/{postId}")
 	public Post updatePost(@PathVariable("postId") int postId, @RequestBody Post post) {
-
-		Post availablePost = getPostByPostId(postId);
-		availablePost.setTitle(post.getTitle());
-		availablePost.setDescription(post.getDescription());
-		availablePost.setContent(post.getContent());
-
-		return availablePost;
+		return postService.updatePost(postId, post);
 	}
 
 }
