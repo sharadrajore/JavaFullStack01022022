@@ -2,12 +2,11 @@ package com.zensar.services;
 
 import java.util.List;
 
-import com.zensar.dto.PostDto;
 import com.zensar.entity.Post;
 
 public interface PostService {
 	
-	public PostDto createPost( PostDto postDto);
+	public Post createPost( Post post);
 	
 	public List<Post> getAllPosts();
 	

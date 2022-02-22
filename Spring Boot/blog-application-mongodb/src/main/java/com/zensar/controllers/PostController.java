@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zensar.dto.PostDto;
 import com.zensar.entity.Post;
 import com.zensar.services.PostService;
 
@@ -32,9 +31,9 @@ public class PostController {
 
 	// @RequestMapping(value = "/api/posts",method = RequestMethod.POST)
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
-		PostDto dto = postService.createPost(postDto);
-		return new ResponseEntity<PostDto>(dto, HttpStatus.CREATED);
+	public ResponseEntity<Post> createPost(@RequestBody Post post) {
+		Post post2 = postService.createPost(post);
+		return new ResponseEntity<Post>(post2, HttpStatus.CREATED);
 	}
 
 	// @RequestMapping(value = "/api/posts",method = RequestMethod.GET)

@@ -2,11 +2,9 @@ package com.zensar.services;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zensar.dto.PostDto;
 import com.zensar.entity.Post;
 import com.zensar.repository.PostRepository;
 @Service
@@ -15,34 +13,10 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private PostRepository postRepository;
 	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	
-	
-	public PostDto createPost(PostDto postDto) {
-		// convert dto into entity
-		/*Post post=new Post();
-		post.setPostId(postDto.getPostId());
-		post.setTitle(postDto.getTitle());
-		post.setDescription(postDto.getDescription());
-		post.setContent(postDto.getContent());*/
-		
-		Post post = modelMapper.map(postDto, Post.class);
-		
-		Post insertedPost = postRepository.save(post);
-		
-		// entity into dto
-		
-		/*PostDto dto=new PostDto();
-		dto.setPostId(insertedPost.getPostId());
-		dto.setTitle(insertedPost.getTitle());
-		dto.setDescription(insertedPost.getDescription());
-		dto.setContent(insertedPost.getContent());*/
-		
-		return modelMapper.map(insertedPost, PostDto.class);
-		
-	
+	public Post createPost(Post post) {
+		return postRepository.save(post);
 	}
 
 	

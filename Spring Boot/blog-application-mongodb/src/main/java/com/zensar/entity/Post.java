@@ -1,14 +1,12 @@
 package com.zensar.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "posts")
+@Document(collection ="blogCollection" )
 public class Post {
 
 	@Id
