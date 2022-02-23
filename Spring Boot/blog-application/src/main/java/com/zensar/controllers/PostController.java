@@ -60,5 +60,19 @@ public class PostController {
 	public Post updatePost(@PathVariable("postId") int postId, @RequestBody Post post) {
 		return postService.updatePost(postId, post);
 	}
+	
+	//http://localhost:8080/api/posts/title/My First Blog
+	//http://localhost:8080/api/posts/1
+	
+	
+	@GetMapping(value = "/title/{postTitle}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public List<Post> getPostByPostTitle(@PathVariable("postTitle") String  postTitle) {
+		return postService.getAllPostsByTitle(postTitle);
+	}
+	
+	@GetMapping(value = "/title/{postTitle}/{content}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public List<Post> getPostByPostTitleAndContent(@PathVariable("postTitle") String  postTitle,@PathVariable("content") String  content) {
+		return postService.getAllPostsByTitleAndContent(postTitle, content);
+	}
 
 }

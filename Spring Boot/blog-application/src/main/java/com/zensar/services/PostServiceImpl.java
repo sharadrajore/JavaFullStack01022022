@@ -72,6 +72,15 @@ public class PostServiceImpl implements PostService {
 		return postRepository.save(availablePost);
 		
 	}
+	
+	public List<Post> getAllPostsByTitle(String title) {
+		return postRepository.retriveByTitle(title);
+	}
+
+	
+	public List<Post> getAllPostsByTitleAndContent(String title,String content) {
+		return postRepository.retriveByTitleAndContent(title, content);
+	}
 
 	
 

@@ -16,5 +16,9 @@ public interface PostService {
 	public void deletePostById(long postId);
 	
 	public Post updatePost( int postId,  Post post);
+	
+	public List<Post> getAllPostsByTitle(String title);
+	
+	public List<Post> getAllPostsByTitleAndContent(String title,String content);
 
 }
