@@ -2,6 +2,7 @@ package com.zensar.services;
 
 import java.util.List;
 
+import com.zensar.dto.PageResponse;
 import com.zensar.dto.PostDto;
 import com.zensar.entity.Post;
 
@@ -9,7 +10,7 @@ public interface PostService {
 	
 	public PostDto createPost( PostDto postDto);
 	
-	public List<Post> getAllPosts();
+	public PageResponse getAllPosts(int pageNumber,int pageSize,String sortBy);
 	
 	public Post getPostByPostId(long id);
 	

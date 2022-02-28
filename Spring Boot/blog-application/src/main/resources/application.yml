@@ -6,8 +6,40 @@ spring:
     
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "*" 
+        
       
       
  # create , create-drop,validate,update
+      base-path: /my-actuator
+  endpoint:
+    shutdown:
+      enabled: true
+      
+  info:
+    build:
+      enabled: true
+      
+info:
+ version: 0.0.1
+ created-by: Sharad
+ 
+ 
+ 
+server:
+  servlet:
+    context-path:  /blog-app
+    
+    
+springdoc:
+  swagger-ui:
+    path: /mypath
+ 

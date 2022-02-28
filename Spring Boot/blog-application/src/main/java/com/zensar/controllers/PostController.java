@@ -3,24 +3,30 @@ package com.zensar.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
+import com.zensar.dto.PageResponse;
 import com.zensar.dto.PostDto;
 import com.zensar.entity.Post;
+import com.zensar.exceptions.PostIdNotAvailableException;
 import com.zensar.services.PostService;
 
 @RestController
-@RequestMapping("/api/posts/")
+@RequestMapping("/api/posts")
 public class PostController {
 
 	// http://localhost:8080/api/posts/test/{name} - PathVariable
@@ -38,9 +44,16 @@ public class PostController {
 	}
 
 	// @RequestMapping(value = "/api/posts",method = RequestMethod.GET)
+	//http://localhost:8080/api/posts?pageNumber=2&pageSize=5
 	@GetMapping()
-	public List<Post> getAllPosts() {
-		return postService.getAllPosts();
+	public PageResponse getAllPosts(
+			@RequestParam(value = "pageNumber",defaultValue = "0",required = false)int pageNumber,
+			@RequestParam(value = "pageSize",defaultValue = "5",required = false)int pageSize,
+			@RequestParam(value = "sortBy",defaultValue = "postId",required = false)String sortBy
+			) {
+		
+		
+		return postService.getAllPosts(pageNumber,pageSize,sortBy);
 	}
 
 	// http://localhost:8080/api/post/100
@@ -73,6 +86,12 @@ public class PostController {
 	@GetMapping(value = "/title/{postTitle}/{content}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public List<Post> getPostByPostTitleAndContent(@PathVariable("postTitle") String  postTitle,@PathVariable("content") String  content) {
 		return postService.getAllPostsByTitleAndContent(postTitle, content);
+	}
+	
+	@ExceptionHandler(value = {PostIdNotAvailableException.class})
+	public ResponseEntity<String> handlePostIdError(RuntimeException exception,WebRequest request){
+		System.out.println("I am inside PostController");
+		return new ResponseEntity<String>("Post Id is not available",HttpStatus.BAD_REQUEST);
 	}
 
 }
